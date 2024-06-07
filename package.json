@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@types/node": "^20.12.7"
+  },
+  "dependencies": {
+    "murmurhash3js": "^3.0.1"
   }
 }
