@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
-import type { TResponseData } from './types';
+import type { TResponseData, TUsersGetFunc } from './types';
 
-function isSuccessResponse(resp: unknown): resp is AxiosResponse<unknown> {
+function isSuccessResponse(resp: AxiosResponse<any>): resp is AxiosResponse<any> {
     return typeof resp === 'object'
         && !!resp
         && 'status' in resp
@@ -9,7 +9,7 @@ function isSuccessResponse(resp: unknown): resp is AxiosResponse<unknown> {
         && resp.status === 200;
 }
 
-function isUsersArray(obj: unknown): obj is TResponseData {
+function isUsersArray(obj: any): obj is TResponseData {
     if (typeof obj === 'object'
         && !!obj
         && 'users' in obj
@@ -31,7 +31,7 @@ function isUsersArray(obj: unknown): obj is TResponseData {
     return false;
 }
 
-function assertUsers(resp: unknown): asserts resp is AxiosResponse<TResponseData> {
+function assertUsers(resp: AxiosResponse<any>): asserts resp is AxiosResponse<TResponseData> {
     if (isSuccessResponse(resp)) {
         if (isUsersArray(resp.data)) {
             return;
@@ -43,12 +43,12 @@ function assertUsers(resp: unknown): asserts resp is AxiosResponse<TResponseData
     throw new Error('Не список пользователей');
 }
 
-async function getUser() {
+const getUser: TUsersGetFunc = async () => {
     try {
-        const response: unknown = await axios.get('https://dummyjson.com/users');
+        const response: AxiosResponse<any> = await axios.get('https://dummyjson.com/users');
         assertUsers(response);
 
-        const usersInfo = response.data.users.map(user => `${user.firstName} ${user.lastName}${user.maidenName ? ' ' + user.maidenName : ''}`);
+        const usersInfo: string[] = response.data.users.map(user => `${user.firstName} ${user.lastName}${user.maidenName ? ' ' + user.maidenName : ''}`);
         console.log(`Count ${response.data.users.length}: ${usersInfo.join(', ')}`);
     } catch (error) {
         console.error(error);

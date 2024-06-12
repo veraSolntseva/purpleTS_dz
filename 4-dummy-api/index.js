@@ -48,17 +48,15 @@ function assertUsers(resp) {
     }
     throw new Error('Не список пользователей');
 }
-function getUser() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const response = yield axios_1.default.get('https://dummyjson.com/users');
-            assertUsers(response);
-            const usersInfo = response.data.users.map(user => `${user.firstName} ${user.lastName}${user.maidenName ? ' ' + user.maidenName : ''}`);
-            console.log(`Count ${response.data.users.length}: ${usersInfo.join(', ')}`);
-        }
-        catch (error) {
-            console.error(error);
-        }
-    });
-}
+const getUser = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.get('https://dummyjson.com/users');
+        assertUsers(response);
+        const usersInfo = response.data.users.map(user => `${user.firstName} ${user.lastName}${user.maidenName ? ' ' + user.maidenName : ''}`);
+        console.log(`Count ${response.data.users.length}: ${usersInfo.join(', ')}`);
+    }
+    catch (error) {
+        console.error(error);
+    }
+});
 getUser();

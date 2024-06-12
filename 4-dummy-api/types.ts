@@ -2,6 +2,8 @@ export type TResponseData = {
     users: IUser[];
 }
 
+export type TUsersGetFunc = () => Promise<void>;
+
 const enum GENDER {
     FEMALE = 'female',
     MALE = 'male'
